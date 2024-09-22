@@ -130,7 +130,7 @@ final class StakingDashboardViewModelFactory {
         }
 
         switch stakingOption.type {
-        case .auraRelaychain, .azero, .relaychain:
+        case .auraRelaychain, .azero, .relaychain, .astarStaking:
             return TitleIconViewModel(
                 title: R.string.localizable.stakingDirect(preferredLanguages: locale.rLanguages).uppercased(),
                 icon: R.image.iconStakingDirect()

@@ -175,7 +175,8 @@ extension Array where Element: StakingDashboardItemModelCommonProtocol {
             KnowChainId.ternoa: 5,
             KnowChainId.polkadex: 6,
             KnowChainId.calamari: 7,
-            KnowChainId.zeitgeist: 8
+            KnowChainId.zeitgeist: 8,
+            KnowChainId.astar: 9
         ]
     }
 

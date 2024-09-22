@@ -7,6 +7,7 @@ enum StakingType: String, Codable, Equatable, Hashable {
     case auraRelaychain = "aura-relaychain"
     case turing
     case nominationPools = "nomination-pools"
+    case astarStaking = "astar-staking"
     case unsupported
 
     init(rawType: String?) {
@@ -44,7 +45,7 @@ enum StakingClass {
 
     init(stakingType: StakingType) {
         switch stakingType {
-        case .relaychain, .azero, .auraRelaychain:
+        case .relaychain, .azero, .auraRelaychain, .astarStaking:
             self = .relaychain
         case .parachain, .turing:
             self = .parachain

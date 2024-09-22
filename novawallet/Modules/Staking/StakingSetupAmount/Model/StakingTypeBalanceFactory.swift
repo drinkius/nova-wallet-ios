@@ -29,7 +29,7 @@ final class StakingTypeBalanceFactory: StakingTypeBalanceFactoryProtocol {
 
     var stakingTypeAllowsLocks: Bool {
         switch stakingType {
-        case .relaychain, .auraRelaychain, .azero, .none, .parachain, .turing:
+        case .relaychain, .astarStaking, .auraRelaychain, .azero, .none, .parachain, .turing:
             return true
         case .nominationPools, .unsupported:
             return false

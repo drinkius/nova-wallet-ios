@@ -201,6 +201,19 @@ final class MultistakingSyncService {
                     service.setup()
                 }
             }
+        case .astarStaking:
+            if let service = createAstarStaking(
+                for: chainAssetOption.chainAsset,
+                stakingType: chainAssetOption.type
+            ) {
+                onchainUpdaters[stakingOption] = service
+
+                addSyncHandler(for: service, stakingOption: stakingOption)
+
+                if isActive {
+                    service.setup()
+                }
+            }
         case .parachain, .turing:
             if let service = createParachainStaking(
                 for: chainAssetOption.chainAsset,
@@ -260,6 +273,39 @@ final class MultistakingSyncService {
             chainAsset: chainAsset,
             stakingType: stakingType,
             dashboardRepository: multistakingRepositoryFactory.createRelaychainRepository(),
+            accountRepository: multistakingRepositoryFactory.createResolvedAccountRepository(),
+            cacheRepository: substrateRepositoryFactory.createChainStorageItemRepository(),
+            stashItemRepository: stashItemRepository,
+            connection: connection,
+            runtimeService: runtimeService,
+            operationQueue: operationQueue,
+            workingQueue: workingQueue,
+            logger: logger
+        )
+    }
+
+    private func createAstarStaking(
+        for chainAsset: ChainAsset,
+        stakingType: StakingType
+    ) -> OnchainSyncServiceProtocol? {
+        guard
+            let account = wallet.fetch(for: chainAsset.chain.accountRequest()),
+            let connection = chainRegistry.getConnection(for: chainAsset.chain.chainId),
+            let runtimeService = chainRegistry.getRuntimeProvider(for: chainAsset.chain.chainId),
+            let accountAddress = try? account.accountId.toAddress(using: chainAsset.chain.chainFormat) else {
+            return nil
+        }
+
+        let stashItemRepository = substrateRepositoryFactory.createStashItemRepository(
+            for: accountAddress, chainId: chainAsset.chain.chainId
+        )
+
+        return AstarMultistakingUpdateService(
+            walletId: wallet.metaId,
+            accountId: account.accountId,
+            chainAsset: chainAsset,
+            stakingType: stakingType,
+            dashboardRepository: multistakingRepositoryFactory.createAstarRepository(),
             accountRepository: multistakingRepositoryFactory.createResolvedAccountRepository(),
             cacheRepository: substrateRepositoryFactory.createChainStorageItemRepository(),
             stashItemRepository: stashItemRepository,

@@ -7,7 +7,7 @@ enum ConsensusType {
 
     init?(stakingType: StakingType) {
         switch stakingType {
-        case .relaychain:
+        case .relaychain, .astarStaking: // couldn't find info, experimenting
             self = .babe
         case .auraRelaychain:
             self = .auraGeneral

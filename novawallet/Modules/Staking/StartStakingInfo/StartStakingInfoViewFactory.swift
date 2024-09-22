@@ -14,7 +14,7 @@ struct StartStakingInfoViewFactory {
         }
 
         switch mainStakingType {
-        case .relaychain:
+        case .relaychain, .astarStaking: // assuming .babe is correct consensus
             return createRelaychainView(
                 chainAsset: chainAsset,
                 consensus: .babe,

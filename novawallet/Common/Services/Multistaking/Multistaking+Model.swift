@@ -37,6 +37,11 @@ extension Multistaking {
         let state: Multistaking.RelaychainState
     }
 
+    struct DashboardItemAstarPart {
+        let stakingOption: OptionWithWallet
+        let state: Multistaking.AstarState
+    }
+
     struct DashboardItemParachainPart {
         let stakingOption: OptionWithWallet
         let state: Multistaking.ParachainState
@@ -71,6 +76,14 @@ extension Multistaking {
             } else {
                 return .bonded
             }
+        }
+
+        static func from(astarState: Multistaking.AstarState) -> DashboardItemOnchainState? {
+            guard astarState.ledger != nil else {
+                return nil
+            }
+
+            return .bonded
         }
 
         static func from(parachainState: Multistaking.ParachainState) -> DashboardItemOnchainState? {
